@@ -15,6 +15,7 @@ editor_options:
 library(tidyverse)
 library(lingtypology)
 read_csv("data.csv") |> 
+  filter(feature_id == 1) |> 
   mutate(participle = str_split(participle, ";")) |> 
   unnest_longer(participle) |> 
   count(settlement, latitude, longitude, dialect, participle, example) |> 
