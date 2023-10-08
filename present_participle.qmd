@@ -2,6 +2,7 @@
 title: "Причастия настоящего времени"
 author: "Данные: В. Мальцева; картографирование: Г. Мороз"
 format: html
+language: custom.yml
 editor_options: 
   chunk_output_type: console
 ---
