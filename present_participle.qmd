@@ -1,0 +1,38 @@
+---
+title: "Причастия настоящего времени"
+author: "Данные: В. Мальцева; картографирование: Г. Мороз"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(lingtypology)
+readxl::read_xlsx("data.xlsx") |> 
+  mutate(participle = str_split(participle, ";")) |> 
+  unnest_longer(participle) |> 
+  count(settlement, latitude, longitude, dialect, participle, example) |> 
+  mutate(popup = str_glue("<b>{settlement}</b> ({dialect})<br>{example}")) |> 
+  pivot_wider(names_from = participle, values_from = n, values_fill = 0) |> 
+  select(settlement, latitude, longitude, dialect, example, popup, 
+         `чатхан (полная)`, 
+         `чаған / чхан (< чатхан)`,
+         `чин ( < чатхан)`,
+         `турған / туған`,
+         `другое`) ->
+  df
+
+map.feature(languages = "fake",
+            latitude = df$latitude,
+            longitude = df$longitude, 
+            minichart.data = df[,-c(1:6)], 
+            minichart = "pie", 
+            width = 1.5,
+            popup = df$popup)
+```
+
